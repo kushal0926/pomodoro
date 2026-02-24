@@ -2,8 +2,13 @@
 <html lang="en">
     <head>
         <title>pomodoro</title>
+        <script src="https://unpkg.com/htmx.org@2.0.0"></script>
     </head>
     <body>
         <h1>pomodoro app from index</h1>
+        <button hx-get="/hello" hx-target="#result">send hello</button>
+        <div id="result">
+        </div>
+        <div hx-get="/time" hx-trigger="every 1s" style="font-size: 5rem;"></div>
     </body>
 </html>
