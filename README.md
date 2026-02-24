@@ -1,1 +1,1 @@
-!(tech)[stack.png]
+![tech](stack.png)
