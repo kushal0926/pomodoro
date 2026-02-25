@@ -6,9 +6,13 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/kushal0926/pomodoro/db"
+	"github.com/kushal0926/pomodoro/middleware"
 )
 
 func main() {
+	db.InitDB()
 	fmt.Println("making an pomodoro app")
 	// main page
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -17,6 +21,8 @@ func main() {
 			log.Fatalf("failed to load template: %v", err)
 		}
 		tmpl.Execute(w, nil)
+		session :=middleware.GetSession(w, r)
+		log.Println(session)
 
 	})
 
