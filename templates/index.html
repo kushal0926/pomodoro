@@ -10,5 +10,10 @@
         <div id="result">
         </div>
         <div hx-get="/time" hx-trigger="every 1s" style="font-size: 5rem;"></div>
+
+        <!-- timer -->
+         <div hx-get="/timer" hx-trigger="every 1s"></div>
+
+         <button hx-post="/timer/start">start timer</button>
     </body>
 </html>
