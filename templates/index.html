@@ -9,11 +9,14 @@
         <button hx-get="/hello" hx-target="#result">send hello</button>
         <div id="result">
         </div>
-        <div hx-get="/time" hx-trigger="every 1s" style="font-size: 5rem;"></div>
+        <!--<div hx-get="/time" hx-trigger="every 1s" style="font-size: 5rem;"></div>-->
 
         <!-- timer -->
-         <div hx-get="/timer" hx-trigger="every 1s"></div>
 
          <button hx-post="/timer/start">start timer</button>
+         <button hx-post="/timer/stop">stop timer</button>
+         
+         
+         <div hx-get="/timer" hx-trigger="every 1s"></div>
     </body>
 </html>

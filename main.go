@@ -16,6 +16,7 @@ import (
 
 func main() {
 	godotenv.Load()
+	middleware.InitStore()
 	db.InitDB()
 	fmt.Println("making an pomodoro app")
 	gob.Register(int64(0))
@@ -46,6 +47,7 @@ func main() {
 
 	http.HandleFunc("/timer", handlers.GetTimer)
 	http.HandleFunc("/timer/start", handlers.StartTimer)
+	http.HandleFunc("/timer/stop", handlers.StopTimer)
 
 	http.ListenAndServe(":8080", nil)
 }

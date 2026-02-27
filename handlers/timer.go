@@ -48,6 +48,19 @@ func StartTimer(w http.ResponseWriter, r *http.Request) {
 	sessions.Save(r, w)
 	log.Println("saved session:", sessions.Values)
 
-	fmt.Fprint(w, "<h1>24:20</h1>")
+	fmt.Fprint(w, "<h1>time started</h1>")
+
+}
+
+func StopTimer(w http.ResponseWriter, r *http.Request) {
+	sessions := middleware.GetSession(w, r)
+	is_running := false
+	
+	delete(sessions.Values, "start_time" )
+	delete(sessions.Values, "duration" )
+	sessions.Values["is_running"] = is_running
+	sessions.Save(r, w)
+
+	fmt.Fprint(w, "<h1>stopped timer</h1>")
 
 }
