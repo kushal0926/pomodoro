@@ -19,5 +19,21 @@
 
 
          <div hx-get="/timer" hx-trigger="every 1s"></div>
+
+
+         <div id="notify"></div>
+         <!--notify sound-->
+         <audio id="notify-sound" src="/assets/sounds/notify.mp3"></audio>
+         <script>
+         function playSound() {
+           const sound = document.getElementById('notify-sound');
+             sound.load();
+             sound.play().catch(err => console.log('Audio error:', err));
+         }
+
+         function showPopup(mode) {
+             alert('Time to ' + mode + '!');
+         }
+         </script>
     </body>
 </html>

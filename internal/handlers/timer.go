@@ -29,6 +29,45 @@ func GetTimer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	remaining := duration - int(time.Now().Unix()-startTime)
+	if remaining <= 0 {
+		mode, ok := sessions.Values["mode"].(string)
+		if !ok {
+			mode = "work"
+		}
+
+		var newDuration int
+		if mode == "work" {
+			mode = "break"
+			breakDur, ok := sessions.Values["break_duration"].(int)
+			if !ok {
+				breakDur = 5
+			}
+			newDuration = breakDur * 60
+
+		} else {
+			mode = "work"
+			workDur, ok := sessions.Values["work_duration"].(int)
+			if !ok {
+				workDur = 35
+			}
+			newDuration = workDur * 60
+		}
+
+		sessions.Values["mode"] = mode
+		sessions.Values["start_time"] = time.Now().Unix()
+		sessions.Values["duration"] = newDuration
+		sessions.Save(r, w)
+
+		var message string
+		if mode == "break" {
+			message = "Take a break!"
+		} else {
+			message = "Back to work!"
+		}
+		fmt.Fprintf(w, `<div>00:00</div><div id="notify" hx-swap-oob="true"><script>playSound(); showPopup('%s');</script></div>`, message)
+		return
+
+	}
 
 	minutes := remaining / 60
 	seconds := remaining % 60
@@ -39,7 +78,11 @@ func GetTimer(w http.ResponseWriter, r *http.Request) {
 func StartTimer(w http.ResponseWriter, r *http.Request) {
 	sessions := middleware.GetSession(w, r)
 	start_time := time.Now().Unix()
-	duration := 25 * 60
+	workDur, ok := sessions.Values["work_duration"].(int)
+	if !ok {
+		workDur = 1
+	}
+	duration := workDur * 60
 	is_running := true
 
 	sessions.Values["start_time"] = start_time
@@ -55,9 +98,9 @@ func StartTimer(w http.ResponseWriter, r *http.Request) {
 func StopTimer(w http.ResponseWriter, r *http.Request) {
 	sessions := middleware.GetSession(w, r)
 	is_running := false
-	
-	delete(sessions.Values, "start_time" )
-	delete(sessions.Values, "duration" )
+
+	delete(sessions.Values, "start_time")
+	delete(sessions.Values, "duration")
 	sessions.Values["is_running"] = is_running
 	sessions.Save(r, w)
 

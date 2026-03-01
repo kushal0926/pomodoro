@@ -17,6 +17,7 @@ func main() {
 	gob.Register(int64(0))
 	gob.Register(int(0))
 	gob.Register(bool(false))
+	gob.Register("")
 
 	srv := server.NewServer()
 	if err := srv.ListenAndServe(); err != nil {

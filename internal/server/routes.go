@@ -29,6 +29,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux.HandleFunc("/timer", handlers.GetTimer)
 	mux.HandleFunc("/timer/start", handlers.StartTimer)
 	mux.HandleFunc("/timer/stop", handlers.StopTimer)
+	mux.HandleFunc("/timer/settings", handlers.SaveSettings)
 
 	return s.corsMiddleware(mux)
 }
